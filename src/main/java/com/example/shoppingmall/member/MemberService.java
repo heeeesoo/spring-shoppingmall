@@ -1,5 +1,6 @@
 package com.example.shoppingmall.member;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +10,17 @@ public class MemberService {
 
     MemberRepository memberRepository;
 
+    @Transactional
     public String join(Member member) {
-        return memberRepository.save(member);
+        memberRepository.save(member);
+
+        String userId = memberRepository
+                .findByUserId(member.getUserId())
+                .getUserId();
+
+        System.out.println("예외처리를 해도 트랜잭션은 마무리 될까요?");
+
+        return userId;
     }
 
     public boolean checkDuplicateId(String userId) {
@@ -21,13 +31,5 @@ public class MemberService {
             return false;
         else
             return true;
-    }
-
-    public void makeConnection() {
-        memberRepository.makeConnection();
-    }
-
-    public Member getMemberByUserId(String userId) {
-        return memberRepository.getMemberByUserId(userId);
     }
 }
