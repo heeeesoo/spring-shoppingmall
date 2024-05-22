@@ -17,18 +17,20 @@ import java.util.Map;
 @AllArgsConstructor
 public class ProductController {
 
-//    @Autowired // DI
+    //    @Autowired // DI
     ProductService productService;
 
     // 상품 개별 등록
     @PostMapping("/products")
     public ResponseEntity registerProduct(@RequestBody Product product) {
 
-        if(Validator.isAlpha(product.getName()) &&
+        if (Validator.isAlpha(product.getName()) &&
                 Validator.isNumber(product.getPrice())) {
             log.info(product.getName());
 
             Product savedProduct = productService.registerProduct(product);
+            System.out.println("product -" + product);
+            System.out.println("savedProduct - " + savedProduct);
 
             try {
                 log.info(savedProduct.getName());
@@ -42,8 +44,8 @@ public class ProductController {
 
     // 상품 개별 조회
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> findProduct(@PathVariable(value="id") int id) {
-        if(!Validator.isNumber(id)) {
+    public ResponseEntity<Product> findProduct(@PathVariable(value = "id") int id) {
+        if (!Validator.isNumber(id)) {
 //            Logger log = LoggerFactory.getLogger(ProductController.class);
             log.info(id + " haha");
             log.trace("id {}", "haha");
@@ -52,7 +54,7 @@ public class ProductController {
         }
         Product resultProduct = productService.findProduct(id);
 
-        if(resultProduct == null)
+        if (resultProduct == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(resultProduct, HttpStatus.OK);
@@ -64,13 +66,13 @@ public class ProductController {
             @RequestParam("limit") int limit,
             @RequestParam("currentPage") int currentPage,
             @RequestParam(value = "categoryId", required = false) Integer categoryId
-        ) {
+    ) {
         log.info("limit = {}", limit);
         log.info("currentPage = {}", currentPage);
         log.info("categoryId = {}", categoryId);
 
         // TODO null 체크는 어디서 해야할까?
-        if(categoryId == null) {
+        if (categoryId == null) {
             List<Product> products = productService.findProducts(limit, currentPage);
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -81,13 +83,13 @@ public class ProductController {
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") int id) {
-        if(!Validator.isNumber(id))
+        if (!Validator.isNumber(id))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         productService.deleteProduct(id);
         Product product = productService.findProduct(id);
 
-        if(product == null)
+        if (product == null)
             return new ResponseEntity<>(HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

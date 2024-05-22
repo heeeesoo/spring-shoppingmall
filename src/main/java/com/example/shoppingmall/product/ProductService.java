@@ -1,6 +1,7 @@
 package com.example.shoppingmall.product;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +11,15 @@ import java.util.List;
 public class ProductService {
     ProductRepository productRepository;
 
+    @Autowired
+    private ProductJPARepository productJPARepository;
+
     public Product registerProduct(Product product) {
         System.out.println(
                 "/products : service - " + product.getName());
 
-        return productRepository.save(product);
+        return productJPARepository.save(product);
+//        return productRepository.save(product);
     }
 
     public Product findProduct(int id) {
