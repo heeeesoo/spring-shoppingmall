@@ -2,6 +2,7 @@ package com.example.shoppingmall.member;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,9 +11,13 @@ public class MemberService {
 
     MemberRepository memberRepository;
 
+    @Autowired
+    private MemberJPARepository memberJPARepository;
+
     @Transactional
     public String join(Member member) {
-        memberRepository.save(member);
+//        memberRepository.save(member);
+        memberJPARepository.save(member);
 
         String userId = memberRepository
                 .findByUserId(member.getUserId())
