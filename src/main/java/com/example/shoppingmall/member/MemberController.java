@@ -59,9 +59,15 @@ public class MemberController {
 //            return error("아이디 중복", HttpStatus.CONFLICT);
 
         Member requestMember = memberDto.convertToEntity();
-                        // fromDtoToEntity(memberDto);
+        // fromDtoToEntity(memberDto);
         String userId = memberService.join(requestMember);
         return success(userId);
+    }
+
+    @PostMapping("/login")
+    public ApiUtils.ApiResult login(@RequestBody LoginRequest loginRequest) {
+        memberService.login(loginRequest);
+        return success("test");
     }
 
     private boolean isDuplicateId(MemberDto memberDto) {

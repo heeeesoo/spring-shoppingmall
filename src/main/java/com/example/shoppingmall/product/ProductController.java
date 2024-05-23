@@ -23,7 +23,9 @@ public class ProductController {
 
     // 상품 개별 등록
     @PostMapping("/products")
-    public ResponseEntity registerProduct(@RequestBody Product product) {
+    public ResponseEntity registerProduct(@RequestBody ProductDto productDto) {
+
+        Product product = productDto.convertToEntity();
 
         if (Validator.isAlpha(product.getName()) &&
                 Validator.isNumber(product.getPrice())) {

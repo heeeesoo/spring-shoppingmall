@@ -45,4 +45,8 @@ public class MemberService {
         else
             return true;
     }
+
+    public void login(LoginRequest loginRequest) {
+        System.out.println("loginRequest - " + loginRequest);
+    }
 }

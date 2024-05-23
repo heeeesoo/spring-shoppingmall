@@ -18,7 +18,7 @@ public class MemberDto {
     private String userId;
 
     @NotBlank(message = "비밀번호는 필수 입력입니다.")
-    @Size(min=8, message = "최소 8자리 이상 입력해주세요.")
+    @Size(min = 8, message = "최소 8자리 이상 입력해주세요.")
     private String pw;
 
     @NotBlank(message = "이름은 필수 입력입니다.")
