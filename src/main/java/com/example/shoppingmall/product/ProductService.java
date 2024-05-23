@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor // 필드로 생성자 코드 구현
@@ -46,5 +47,9 @@ public class ProductService {
 
     public List<Product> findAllProducts() {
         return productJPARepository.findAll();
+    }
+
+    public Optional<Product> findProductById(int id) {
+        return productJPARepository.findById(id);
     }
 }

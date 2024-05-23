@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -52,12 +53,23 @@ public class ProductController {
 
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Product resultProduct = productService.findProduct(id);
+        Optional<Product> resultProductById = productService.findProductById(id);
+        System.out.println("resultProductById - " + resultProductById);
 
-        if (resultProduct == null)
+//        if(resultProductById.isPresent()) {
+//            Product product = resultProductById.get();
+//            return new ResponseEntity<>(product, HttpStatus.OK);
+//        }
+
+
+        try {
+            Product product = productService.findProductById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("product doesn't exist"));
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        return new ResponseEntity<>(resultProduct, HttpStatus.OK);
     }
 
     // 상품 전체 조회
