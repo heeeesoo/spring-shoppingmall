@@ -52,4 +52,8 @@ public class ProductService {
     public Optional<Product> findProductById(int id) {
         return productJPARepository.findById(id);
     }
+
+    public void deleteProductById(int id) {
+        productJPARepository.deleteById(id);
+    }
 }

@@ -101,17 +101,27 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity deleteProduct(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
         if (!Validator.isNumber(id))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        productService.deleteProduct(id);
-        Product product = productService.findProduct(id);
+//        productService.deleteProduct(id);
+//        Product product = productService.findProduct(id);
 
-        if (product == null)
-            return new ResponseEntity<>(HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        productService.deleteProductById(id);
+
+        try {
+            Product product = productService.findProductById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("product doesn't exist"));
+            return new ResponseEntity<>("삭제할 상품이 없습니다.", HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("삭제 완료", HttpStatus.OK);
+        }
+
+//        if (product == null)
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        else
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/products/delete")
