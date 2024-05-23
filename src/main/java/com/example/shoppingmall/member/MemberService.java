@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class MemberService {
@@ -19,18 +21,24 @@ public class MemberService {
 //        memberRepository.save(member);
         memberJPARepository.save(member);
 
-        String userId = memberRepository
-                .findByUserId(member.getUserId())
-                .getUserId();
+        Member resultMember = memberJPARepository.findByUserId(member.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("member doesn't exist"));
 
-        System.out.println("예외처리를 해도 트랜잭션은 마무리 될까요?");
+//        String userId = memberRepository
+//                .findByUserId(member.getUserId())
+//                .getUserId();
+//
+//        System.out.println("예외처리를 해도 트랜잭션은 마무리 될까요?");
 
-        return userId;
+        return resultMember.getUserId();
     }
 
     public boolean checkDuplicateId(String userId) {
-        Member existMember
-            = memberRepository.findByUserId(userId);
+//        Member existMember
+//            = memberRepository.findByUserId(userId);
+
+        Member existMember = memberJPARepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("member doesn't exist"));
 
         if (existMember == null)
             return false;
