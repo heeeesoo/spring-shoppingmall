@@ -60,6 +60,13 @@ public class ProductController {
         return new ResponseEntity<>(resultProduct, HttpStatus.OK);
     }
 
+    // 상품 전체 조회
+    @GetMapping(path = "/products/all")
+    public ResponseEntity<List<Product>> findAllProducts() {
+        List<Product> products = productService.findAllProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     // 상품 전체, 카테고리별 조회
     @GetMapping("/products")
     public ResponseEntity<List<Product>> findProducts(

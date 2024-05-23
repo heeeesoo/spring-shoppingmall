@@ -23,6 +23,8 @@ public class ProductService {
     }
 
     public Product findProduct(int id) {
+
+//        return productJPARepository.findById(id);
         return productRepository.findProduct(id);
     }
 
@@ -40,5 +42,9 @@ public class ProductService {
 
     public void deleteProducts(List<Integer> productIds) {
         productRepository.deleteProducts(productIds);
+    }
+
+    public List<Product> findAllProducts() {
+        return productJPARepository.findAll();
     }
 }
